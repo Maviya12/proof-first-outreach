@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{% block title %}Inbox{% endblock %}
+{% block content %}
+<h1 class="text-xl font-semibold mb-4">Inbox</h1>
+<div class="space-y-3">
+{% for i, lead, org in rows %}
+  <section class="bg-white border border-stone-200 rounded-lg p-4 text-sm">
+    <div class="flex items-center gap-3 mb-1">
+      <a class="font-semibold underline" href="/leads/{{ lead.id }}">{{ org.name }}</a>
+      <span class="text-xs px-2 py-0.5 rounded {{ 'bg-red-100 text-red-800' if i.classification in ['UNSUBSCRIBE','NOT_INTERESTED'] else 'bg-emerald-100 text-emerald-800' if i.classification in ['INTERESTED','PRICING','PACKAGE','SEND_WORK'] else 'bg-stone-100' }}">{{ i.classification or 'unclassified' }}</span>
+      <span class="text-xs text-stone-500">{{ i.channel }} · {{ i.occurred_at|dt }}</span>
+      <span class="ml-auto text-xs text-stone-500">{{ lead.status }}</span>
+    </div>
+    <div class="whitespace-pre-wrap text-stone-700">{{ (i.body or '')[:800] }}</div>
+    {% set r = replies.get(lead.id) %}
+    {% if r and r.status in ['APPROVAL_PENDING','DRAFT'] %}<a class="inline-block mt-2 underline text-xs" href="/approvals#m{{ r.id }}">Suggested reply waiting for approval →</a>{% endif %}
+  </section>
+{% else %}
+  <div class="bg-white border border-stone-200 rounded-lg p-8 text-center text-stone-500">No replies yet.</div>
+{% endfor %}
+</div>
+{% endblock %}

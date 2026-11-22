@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Handoff{% endblock %}
+{% block content %}
+<h1 class="text-xl font-semibold mb-1">Handoff queue</h1>
+<p class="text-sm text-stone-500 mb-5">Approved DMs for Instagram, LinkedIn, Facebook, X and WhatsApp. Copy, open the profile, paste and send it yourself, then mark it sent.</p>
+<div class="space-y-4">
+{% for m in items %}
+  <section id="h{{ m.id }}" class="bg-white border border-stone-200 rounded-lg p-4">
+    <div class="flex items-center gap-3 mb-2">
+      <b>{{ m.organization.name }}</b><span class="text-xs px-2 py-0.5 rounded bg-stone-100">{{ m.channel }}</span>
+      <span class="text-xs text-stone-500">{{ m.to_address }}</span>
+    </div>
+    <pre id="txt{{ m.id }}" class="whitespace-pre-wrap text-sm bg-stone-50 border border-stone-200 rounded p-3 mb-3 font-sans">{{ m.body }}</pre>
+    <div class="flex gap-2 text-sm">
+      <button onclick="navigator.clipboard.writeText(document.getElementById('txt{{ m.id }}').innerText).then(()=>{this.innerText='Copied ✓'})" class="px-3 py-1.5 rounded border border-stone-300">Copy message</button>
+      <a href="{{ m.profile_url }}" target="_blank" rel="noopener" class="px-3 py-1.5 rounded border border-stone-300">Open profile ↗</a>
+      <button hx-post="/ui/messages/{{ m.id }}/mark-sent" hx-target="#h{{ m.id }}" hx-swap="outerHTML" class="px-3 py-1.5 rounded bg-stone-900 text-white">Mark as sent</button>
+    </div>
+  </section>
+{% else %}
+  <div class="bg-white border border-stone-200 rounded-lg p-8 text-center text-stone-500">Nothing to hand off.</div>
+{% endfor %}
+</div>
+{% endblock %}

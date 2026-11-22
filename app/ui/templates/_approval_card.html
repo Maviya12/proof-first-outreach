@@ -1,0 +1,91 @@
+{% set v = m.validation %}
+{% set final = v.final if v.final else (v[v.selected] if v.selected and v[v.selected] else {}) %}
+<section id="m{{ m.id }}" class="bg-white border border-stone-200 rounded-lg overflow-hidden">
+  <header class="px-5 py-3 border-b border-stone-100 flex flex-wrap items-center gap-3">
+    <a href="/leads/{{ m.lead.id }}" class="font-semibold hover:underline">{{ m.organization.name }}</a>
+    <span class="text-xs px-2 py-0.5 rounded bg-stone-100">{{ m.channel }}</span>
+    <span class="text-xs px-2 py-0.5 rounded bg-stone-100">{{ m.kind }}{% if m.followup_number %} #{{ m.followup_number }}{% endif %}</span>
+    <span class="text-xs px-2 py-0.5 rounded {{ 'bg-emerald-100 text-emerald-800' if m.status == 'APPROVAL_PENDING' else 'bg-red-100 text-red-800' }}">{{ m.status }}</span>
+    <span class="text-xs text-stone-500">to {{ m.to_address or '—' }}</span>
+    {% if m.lead.quality_score is not none %}<span class="text-xs text-stone-500 ml-auto">score {{ m.lead.quality_score|round|int }}</span>{% endif %}
+  </header>
+
+  <div class="grid md:grid-cols-5 gap-0">
+    <div class="md:col-span-3 p-5 space-y-4">
+      {% if error %}<div class="p-2 text-sm rounded bg-red-50 border border-red-200 text-red-800">{{ error }}</div>{% endif %}
+      {% if flash %}<div class="p-2 text-sm rounded bg-emerald-50 border border-emerald-200">{{ flash }}</div>{% endif %}
+      {% for w in warnings %}<div class="p-2 text-sm rounded bg-amber-50 border border-amber-200 text-amber-900">⚠ {{ w }}</div>{% endfor %}
+      {% for e in final.errors or [] %}<div class="p-2 text-sm rounded bg-red-50 border border-red-200 text-red-800">✕ {{ e }}</div>{% endfor %}
+      {% for w in final.warnings or [] %}<div class="p-2 text-sm rounded bg-amber-50 border border-amber-200 text-amber-900">⚠ {{ w }}</div>{% endfor %}
+      {% if v.needs_user_input %}<div class="p-2 text-sm rounded bg-amber-50 border border-amber-200">Needs your input: {{ v.needs_user_input|join(', ') }} — fill them in <a class="underline" href="/settings">Settings</a>.</div>{% endif %}
+
+      <form hx-post="/ui/messages/{{ m.id }}/edit" hx-target="#m{{ m.id }}" hx-swap="outerHTML" class="space-y-2">
+        {% if m.channel == 'email' %}
+        <input name="subject" value="{{ m.subject or '' }}" placeholder="Subject" class="w-full border border-stone-300 rounded px-3 py-2 text-sm">
+        {% endif %}
+        <textarea name="body" rows="11" class="w-full border border-stone-300 rounded px-3 py-2 text-sm font-mono leading-relaxed">{{ m.body or '' }}</textarea>
+        <div class="flex items-center gap-2 text-xs text-stone-500">
+          <span>{{ final.word_count or 0 }} words · email 70–120, DM 40–80</span>
+          <button class="ml-auto px-3 py-1.5 rounded border border-stone-300 text-stone-800 hover:bg-stone-50">Save edit &amp; re-check</button>
+        </div>
+      </form>
+
+      <div class="flex flex-wrap gap-2">
+        <button hx-post="/ui/messages/{{ m.id }}/approve" hx-target="#m{{ m.id }}" hx-swap="outerHTML"
+                {% if m.status != 'APPROVAL_PENDING' %}disabled{% endif %}
+                class="px-4 py-2 rounded bg-stone-900 text-white text-sm disabled:opacity-40">Approve</button>
+        <form hx-post="/ui/messages/{{ m.id }}/reject" hx-target="#m{{ m.id }}" hx-swap="outerHTML" class="flex gap-2">
+          <input name="reason" placeholder="reason (optional)" class="border border-stone-300 rounded px-2 text-sm">
+          <button class="px-3 py-2 rounded border border-stone-300 text-sm">Reject</button>
+        </form>
+      </div>
+
+      {% if drafts.a and drafts.b %}
+      <details class="text-sm">
+        <summary class="cursor-pointer text-stone-600">Compare draft A / B (selected: {{ v.selected|upper }}{% if v.judge %} — judge: {{ v.judge.reason }}{% endif %})</summary>
+        <div class="grid md:grid-cols-2 gap-3 mt-3">
+          {% for k in ['a','b'] %}
+          <div class="border border-stone-200 rounded p-3 {{ 'ring-2 ring-stone-800' if v.selected == k else '' }}">
+            <div class="flex items-center mb-2 text-xs">
+              <b>Draft {{ k|upper }}</b>
+              <span class="ml-2 {{ 'text-emerald-700' if v[k] and v[k].ok else 'text-red-700' }}">{{ 'valid' if v[k] and v[k].ok else 'invalid' }}</span>
+              {% if v.judge %}<span class="ml-2 text-stone-500">score {{ v.judge['score_' ~ k] }}</span>{% endif %}
+              <form hx-post="/ui/messages/{{ m.id }}/edit" hx-target="#m{{ m.id }}" hx-swap="outerHTML" class="ml-auto">
+                <input type="hidden" name="select_draft" value="{{ k }}"><button class="underline">use this</button></form>
+            </div>
+            {% if drafts[k].subject %}<div class="text-xs text-stone-500 mb-1">Subject: {{ drafts[k].subject }}</div>{% endif %}
+            <div class="whitespace-pre-wrap text-xs">{{ drafts[k].body }}</div>
+            {% if v[k] and v[k].errors %}<ul class="mt-2 text-xs text-red-700 list-disc ml-4">{% for e in v[k].errors %}<li>{{ e }}</li>{% endfor %}</ul>{% endif %}
+          </div>
+          {% endfor %}
+        </div>
+      </details>
+      {% endif %}
+    </div>
+
+    <aside class="md:col-span-2 p-5 bg-stone-50 border-l border-stone-100 space-y-4 text-sm">
+      <div>
+        <h3 class="text-xs uppercase tracking-wide text-stone-500 mb-1">Portfolio link</h3>
+        {% if m.portfolio_asset %}<a href="{{ m.portfolio_asset.url }}" target="_blank" rel="noopener" class="underline break-all">{{ m.portfolio_asset.title }}</a>
+        <div class="text-xs text-stone-500 break-all">{{ m.portfolio_asset.url }}</div>{% else %}<span class="text-red-700">none selected</span>{% endif %}
+      </div>
+      <div>
+        <h3 class="text-xs uppercase tracking-wide text-stone-500 mb-1">Evidence cited</h3>
+        <div class="space-y-1.5">
+          {% for e in m.evidence %}
+          <div class="bg-white border border-stone-200 rounded px-2 py-1.5">
+            <span class="text-[10px] font-mono text-stone-500">E{{ e.id }} · {{ e.kind }}</span>
+            <div>{{ e.snippet }}</div>
+            {% if e.source_url %}<a href="{{ e.source_url }}" target="_blank" rel="noopener" class="text-xs text-stone-500 underline break-all">{{ e.source_ref or e.source_url }}</a>
+            {% elif e.source_ref %}<span class="text-xs text-stone-500">{{ e.source_ref }}</span>{% endif %}
+          </div>
+          {% else %}<div class="text-stone-500">No evidence linked.</div>{% endfor %}
+        </div>
+      </div>
+      {% if m.lead.fit_reason %}<div><h3 class="text-xs uppercase tracking-wide text-stone-500 mb-1">Why this lead</h3><p>{{ m.lead.fit_reason }}</p></div>{% endif %}
+      <details><summary class="cursor-pointer text-xs text-stone-500">All evidence for this lead ({{ all_evidence|length }})</summary>
+        <ul class="mt-2 space-y-1 text-xs">{% for e in all_evidence %}<li><span class="font-mono text-stone-500">E{{ e.id }}</span> {{ e.snippet }}</li>{% endfor %}</ul>
+      </details>
+    </aside>
+  </div>
+</section>

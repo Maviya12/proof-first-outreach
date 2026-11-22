@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Portfolio{% endblock %}
+{% block content %}
+{% if error %}<div class="mb-4 p-3 rounded bg-red-50 border border-red-200 text-sm text-red-800">{{ error }}</div>{% endif %}
+<h1 class="text-xl font-semibold mb-1">Portfolio</h1>
+<p class="text-sm text-stone-500 mb-4">3–5 best pieces per niche plus one <code>main</code> link. Medical niches never receive before/after samples.</p>
+<form method="post" action="/ui/portfolio" class="bg-white border border-stone-200 rounded-lg p-4 mb-5 grid md:grid-cols-6 gap-2 text-sm">
+  <input name="title" required placeholder="Title" class="border border-stone-300 rounded px-2 py-1">
+  <input name="url" required placeholder="https://..." class="md:col-span-2 border border-stone-300 rounded px-2 py-1">
+  <select name="type" class="border border-stone-300 rounded px-2 py-1">{% for t in ['reel','main','cinematic','before_after','testimonial'] %}<option>{{ t }}</option>{% endfor %}</select>
+  <select name="niche_id" class="border border-stone-300 rounded px-2 py-1"><option value="">No niche (main)</option>{% for id, n in niches.items() %}<option value="{{ id }}">{{ n.name }}</option>{% endfor %}</select>
+  <input name="tags" placeholder="tags: reels,captions,walkthrough" class="border border-stone-300 rounded px-2 py-1">
+  <button class="md:col-span-6 justify-self-start px-3 py-1.5 rounded bg-stone-900 text-white">Add asset</button>
+</form>
+<table class="w-full bg-white border border-stone-200 rounded-lg text-sm">
+  <tr class="text-left text-xs uppercase text-stone-500 border-b"><th class="p-2">Title</th><th class="p-2">Niche</th><th class="p-2">Type</th><th class="p-2">Tags</th><th class="p-2">Active</th></tr>
+  {% for a in assets %}<tr class="border-b border-stone-100 {{ 'opacity-50' if not a.active }}">
+    <td class="p-2"><a class="underline" href="{{ a.url }}" target="_blank" rel="noopener">{{ a.title }}</a></td>
+    <td class="p-2">{{ niches[a.niche_id].name if a.niche_id else '—' }}</td><td class="p-2">{{ a.type }}</td><td class="p-2 text-xs">{{ a.tags }}</td>
+    <td class="p-2"><form method="post" action="/ui/portfolio/{{ a.id }}/toggle"><button class="underline text-xs">{{ 'yes — disable' if a.active else 'no — enable' }}</button></form></td></tr>
+  {% else %}<tr><td colspan="5" class="p-6 text-center text-stone-500">No assets yet.</td></tr>{% endfor %}
+</table>
+{% endblock %}

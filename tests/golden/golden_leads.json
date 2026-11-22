@@ -1,0 +1,657 @@
+[
+ {
+  "niche": "medspa",
+  "name": "Glow Skin Studio",
+  "city": "Pune",
+  "country": "IN",
+  "contact_name": "Meera",
+  "intent_signal": "Running Meta ads",
+  "channel": "email",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "We share weekly skincare reels on Instagram and run a monthly live Q&A."
+   },
+   {
+    "kind": "caption",
+    "source_type": "pasted_text",
+    "snippet": "Our Baner branch opens Monday!"
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Captions appear in a single plain white font with no animation"
+   }
+  ]
+ },
+ {
+  "niche": "medspa",
+  "name": "Aura Aesthetics",
+  "city": "Mumbai",
+  "country": "IN",
+  "contact_name": "Dr. Kavya Shah",
+  "intent_signal": null,
+  "channel": "instagram",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "Founded in 2019 by Dr. Kavya Shah in Bandra West."
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Reel thumbnails use three different colour palettes"
+   },
+   {
+    "kind": "bio",
+    "source_type": "pasted_text",
+    "snippet": "Laser & skin studio | Bandra | Book via link"
+   }
+  ]
+ },
+ {
+  "niche": "medspa",
+  "name": "Velvet Skin Lounge",
+  "city": "Bengaluru",
+  "country": "IN",
+  "contact_name": null,
+  "intent_signal": "New clinic",
+  "channel": "email",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "Now open in Indiranagar with extended evening hours."
+   },
+   {
+    "kind": "profile_observation",
+    "source_type": "pasted_text",
+    "snippet": "Bio links to a booking page but no video highlights"
+   }
+  ]
+ },
+ {
+  "niche": "medspa",
+  "name": "Radiance Studio",
+  "city": "Hyderabad",
+  "country": "IN",
+  "contact_name": "Ananya",
+  "intent_signal": null,
+  "channel": "email",
+  "evidence": [
+   {
+    "kind": "caption",
+    "source_type": "pasted_text",
+    "snippet": "Meet our team every Friday on stories"
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "First frame of reels shows only the logo, no hook text"
+   },
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "We post short tips videos from our consultants."
+   }
+  ]
+ },
+ {
+  "niche": "medspa",
+  "name": "Lumiere Clinic",
+  "city": "Delhi",
+  "country": "IN",
+  "contact_name": null,
+  "intent_signal": "Hiring a social media executive",
+  "channel": "email",
+  "evidence": [
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Talking-head videos are filmed vertically with no captions"
+   },
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "Our consultants answer FAQs in short videos."
+   }
+  ]
+ },
+ {
+  "niche": "medspa",
+  "name": "Skin Story",
+  "city": "Chennai",
+  "country": "IN",
+  "contact_name": "Priya",
+  "intent_signal": null,
+  "channel": "instagram",
+  "evidence": [
+   {
+    "kind": "caption",
+    "source_type": "pasted_text",
+    "snippet": "Weekend walk-ins welcome at our Adyar studio"
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Videos end abruptly without a closing card"
+   }
+  ]
+ },
+ {
+  "niche": "clinic",
+  "name": "SmileCraft Dental",
+  "city": "Pune",
+  "country": "IN",
+  "contact_name": "Dr. Rohan Patil",
+  "intent_signal": null,
+  "channel": "email",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "Dr. Rohan Patil has practised in Kothrud since 2012."
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Educational reels use stock music and no on-screen text"
+   },
+   {
+    "kind": "caption",
+    "source_type": "pasted_text",
+    "snippet": "3 tips for brushing with braces"
+   }
+  ]
+ },
+ {
+  "niche": "clinic",
+  "name": "Align Physio",
+  "city": "Mumbai",
+  "country": "IN",
+  "contact_name": null,
+  "intent_signal": "Running Meta ads",
+  "channel": "email",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "We publish exercise videos for desk workers every week."
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Exercise videos are landscape clips cropped into vertical frames"
+   }
+  ]
+ },
+ {
+  "niche": "clinic",
+  "name": "Bright Dental Care",
+  "city": "Nagpur",
+  "country": "IN",
+  "contact_name": "Dr. Sneha Joshi",
+  "intent_signal": null,
+  "channel": "linkedin",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "Second branch opened in Dharampeth this year."
+   },
+   {
+    "kind": "profile_observation",
+    "source_type": "pasted_text",
+    "snippet": "Captions are long paragraphs with no line breaks"
+   }
+  ]
+ },
+ {
+  "niche": "clinic",
+  "name": "MoveWell Physiotherapy",
+  "city": "Bengaluru",
+  "country": "IN",
+  "contact_name": null,
+  "intent_signal": null,
+  "channel": "email",
+  "evidence": [
+   {
+    "kind": "caption",
+    "source_type": "pasted_text",
+    "snippet": "New posture workshop every Saturday"
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Workshop clips are uploaded as single long takes"
+   }
+  ]
+ },
+ {
+  "niche": "clinic",
+  "name": "Pearl Dental Studio",
+  "city": "Ahmedabad",
+  "country": "IN",
+  "contact_name": "Dr. Mehul Desai",
+  "intent_signal": null,
+  "channel": "email",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "We explain every procedure step on our YouTube channel."
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "YouTube thumbnails use small text that is hard to read on mobile"
+   }
+  ]
+ },
+ {
+  "niche": "realtor",
+  "name": "Skyline Realty",
+  "city": "Pune",
+  "country": "IN",
+  "contact_name": "Arjun Mehta",
+  "intent_signal": "Running Meta ads",
+  "channel": "email",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "Exclusive listings across Baner, Balewadi and Wakad."
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Property reels are slideshows of still photos"
+   },
+   {
+    "kind": "caption",
+    "source_type": "pasted_text",
+    "snippet": "3BHK with skyline view now available in Balewadi"
+   }
+  ]
+ },
+ {
+  "niche": "realtor",
+  "name": "Coastal Homes",
+  "city": "Goa",
+  "country": "IN",
+  "contact_name": null,
+  "intent_signal": null,
+  "channel": "instagram",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "Villas and holiday homes in North Goa."
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Drone shots appear without music or titles"
+   }
+  ]
+ },
+ {
+  "niche": "realtor",
+  "name": "UrbanNest Properties",
+  "city": "Gurugram",
+  "country": "IN",
+  "contact_name": "Neha Kapoor",
+  "intent_signal": null,
+  "channel": "email",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "Neha Kapoor leads our luxury resale team."
+   },
+   {
+    "kind": "profile_observation",
+    "source_type": "pasted_text",
+    "snippet": "Walkthrough videos run over 4 minutes with no chapter markers"
+   }
+  ]
+ },
+ {
+  "niche": "realtor",
+  "name": "Greenfield Developers",
+  "city": "Nashik",
+  "country": "IN",
+  "contact_name": null,
+  "intent_signal": "New project launch",
+  "channel": "email",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "Phase 2 bookings open for Greenfield Residency."
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Construction update videos have no captions"
+   }
+  ]
+ },
+ {
+  "niche": "realtor",
+  "name": "Prime Spaces",
+  "city": "Hyderabad",
+  "country": "IN",
+  "contact_name": "Karthik Reddy",
+  "intent_signal": null,
+  "channel": "facebook",
+  "evidence": [
+   {
+    "kind": "caption",
+    "source_type": "pasted_text",
+    "snippet": "Open house this Sunday in Gachibowli"
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Agent intro video is filmed against a busy background"
+   }
+  ]
+ },
+ {
+  "niche": "realtor",
+  "name": "Harbour Realty",
+  "city": "Kochi",
+  "country": "IN",
+  "contact_name": null,
+  "intent_signal": null,
+  "channel": "email",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "We list waterfront apartments in Marine Drive."
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Listing reels reuse the same template for every property"
+   }
+  ]
+ },
+ {
+  "niche": "creator",
+  "name": "FitWithRiya",
+  "city": "Mumbai",
+  "country": "IN",
+  "contact_name": "Riya",
+  "intent_signal": null,
+  "channel": "instagram",
+  "evidence": [
+   {
+    "kind": "bio",
+    "source_type": "pasted_text",
+    "snippet": "Home workouts for busy moms | New video every Tuesday"
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Reels are cut from long YouTube workouts with no hook in the first seconds"
+   }
+  ]
+ },
+ {
+  "niche": "creator",
+  "name": "The Money Chai",
+  "city": "Delhi",
+  "country": "IN",
+  "contact_name": "Aman",
+  "intent_signal": null,
+  "channel": "instagram",
+  "evidence": [
+   {
+    "kind": "bio",
+    "source_type": "pasted_text",
+    "snippet": "Personal finance in Hinglish | Podcast every Thursday"
+   },
+   {
+    "kind": "profile_observation",
+    "source_type": "pasted_text",
+    "snippet": "Podcast clips are posted as static audiograms"
+   }
+  ]
+ },
+ {
+  "niche": "creator",
+  "name": "Chef Tanvi",
+  "city": "Pune",
+  "country": "IN",
+  "contact_name": "Tanvi",
+  "intent_signal": null,
+  "channel": "instagram",
+  "evidence": [
+   {
+    "kind": "caption",
+    "source_type": "pasted_text",
+    "snippet": "Recipe of the week: 10-minute poha"
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Recipe reels have no step text on screen"
+   }
+  ]
+ },
+ {
+  "niche": "creator",
+  "name": "CodeWithKunal",
+  "city": "Bengaluru",
+  "country": "IN",
+  "contact_name": "Kunal",
+  "intent_signal": null,
+  "channel": "x",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "Free tutorials on web development every week."
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Shorts are uploaded with the original 16:9 frame and black bars"
+   }
+  ]
+ },
+ {
+  "niche": "creator",
+  "name": "Wander with Isha",
+  "city": "Jaipur",
+  "country": "IN",
+  "contact_name": "Isha",
+  "intent_signal": null,
+  "channel": "instagram",
+  "evidence": [
+   {
+    "kind": "bio",
+    "source_type": "pasted_text",
+    "snippet": "Travel stories from Rajasthan | Collabs: email in bio"
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Travel reels use the same transition on every cut"
+   }
+  ]
+ },
+ {
+  "niche": "creator",
+  "name": "Startup Stories Podcast",
+  "city": "Mumbai",
+  "country": "IN",
+  "contact_name": null,
+  "intent_signal": null,
+  "channel": "linkedin",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "Weekly conversations with Indian founders."
+   },
+   {
+    "kind": "profile_observation",
+    "source_type": "pasted_text",
+    "snippet": "Episodes are posted to YouTube with no short clips"
+   }
+  ]
+ },
+ {
+  "niche": "agency",
+  "name": "Pixel & Pulse Media",
+  "city": "Pune",
+  "country": "IN",
+  "contact_name": "Sahil",
+  "intent_signal": "Hiring video editor",
+  "channel": "email",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "Social media management for 40+ D2C brands."
+   },
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "We're hiring a video editor (contract)."
+   }
+  ]
+ },
+ {
+  "niche": "agency",
+  "name": "BrightBridge Digital",
+  "city": "Mumbai",
+  "country": "IN",
+  "contact_name": null,
+  "intent_signal": null,
+  "channel": "linkedin",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "Performance marketing and content for real-estate brands."
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Client reels share the same caption style across brands"
+   }
+  ]
+ },
+ {
+  "niche": "agency",
+  "name": "Kite Creative",
+  "city": "Bengaluru",
+  "country": "IN",
+  "contact_name": "Pooja Nair",
+  "intent_signal": null,
+  "channel": "email",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "Pooja Nair, Founder & Creative Director."
+   },
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "We produce monthly content calendars for clinics and salons."
+   }
+  ]
+ },
+ {
+  "niche": "agency",
+  "name": "Monsoon Media",
+  "city": "Kolkata",
+  "country": "IN",
+  "contact_name": null,
+  "intent_signal": "Running Meta ads",
+  "channel": "email",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "Full-service agency for hospitality brands."
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Hotel reels are posted without on-screen text"
+   }
+  ]
+ },
+ {
+  "niche": "agency",
+  "name": "NorthStar Social",
+  "city": "Chandigarh",
+  "country": "IN",
+  "contact_name": "Vikram",
+  "intent_signal": null,
+  "channel": "email",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "Vikram runs our client success team."
+   },
+   {
+    "kind": "caption",
+    "source_type": "pasted_text",
+    "snippet": "Case study: 3 months of reels for a cafe chain"
+   }
+  ]
+ },
+ {
+  "niche": "medspa",
+  "name": "Halo Hair & Skin",
+  "city": "Indore",
+  "country": "IN",
+  "contact_name": null,
+  "intent_signal": null,
+  "channel": "instagram",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "Hair and skin studio in Vijay Nagar since 2021."
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Highlights covers use mismatched fonts"
+   }
+  ]
+ },
+ {
+  "niche": "realtor",
+  "name": "Lakeview Estates",
+  "city": "Bhopal",
+  "country": "IN",
+  "contact_name": "Rahul Verma",
+  "intent_signal": null,
+  "channel": "email",
+  "evidence": [
+   {
+    "kind": "website_text",
+    "source_type": "web",
+    "snippet": "Rahul Verma, Director, has 15 years in residential sales."
+   },
+   {
+    "kind": "screenshot_observation",
+    "source_type": "screenshot",
+    "snippet": "Site visit videos are shaky handheld clips without stabilisation"
+   }
+  ]
+ }
+]

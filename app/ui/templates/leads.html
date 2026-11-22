@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Leads{% endblock %}
+{% block content %}
+<div class="flex items-end gap-4 mb-4">
+  <h1 class="text-xl font-semibold">Leads</h1>
+  <form class="ml-auto flex gap-2 text-sm">
+    <input name="q" value="{{ f.q }}" placeholder="Search name" class="border border-stone-300 rounded px-2 py-1">
+    <select name="niche" class="border border-stone-300 rounded px-2 py-1"><option value="">All niches</option>
+      {% for n in niches %}<option value="{{ n.slug }}" {{ 'selected' if f.niche == n.slug }}>{{ n.name }}</option>{% endfor %}</select>
+    <select name="status" class="border border-stone-300 rounded px-2 py-1"><option value="">All statuses</option>
+      {% for s, c in counts.items() %}<option value="{{ s }}" {{ 'selected' if f.status == s }}>{{ s }} ({{ c }})</option>{% endfor %}</select>
+    <button class="px-3 py-1 rounded bg-stone-900 text-white">Filter</button>
+  </form>
+</div>
+<table class="w-full bg-white border border-stone-200 rounded-lg text-sm">
+  <thead class="text-left text-xs uppercase text-stone-500 border-b border-stone-200">
+    <tr><th class="p-2">Business</th><th class="p-2">City</th><th class="p-2">Status</th><th class="p-2">Score</th><th class="p-2">Source</th><th class="p-2">Flags</th></tr>
+  </thead>
+  <tbody>
+  {% for lead, org in rows %}
+    <tr class="border-b border-stone-100 hover:bg-stone-50">
+      <td class="p-2"><a class="underline" href="/leads/{{ lead.id }}">{{ org.name }}</a><div class="text-xs text-stone-500">{{ org.domain_norm or '' }}</div></td>
+      <td class="p-2">{{ org.city or '' }} {{ org.country or '' }}</td>
+      <td class="p-2"><span class="text-xs px-2 py-0.5 rounded bg-stone-100">{{ lead.status }}</span></td>
+      <td class="p-2">{{ lead.quality_score|round|int if lead.quality_score is not none else '—' }}</td>
+      <td class="p-2 text-xs">{{ lead.source or '' }}{% if lead.intent_signal %}<div class="text-emerald-700">{{ lead.intent_signal }}</div>{% endif %}</td>
+      <td class="p-2 text-xs text-amber-800">{{ lead.needs_review or '' }}</td>
+    </tr>
+  {% else %}
+    <tr><td colspan="6" class="p-6 text-center text-stone-500">No leads yet. <a class="underline" href="/discovery">Import a CSV</a>.</td></tr>
+  {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

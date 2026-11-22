@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Settings{% endblock %}
+{% block content %}
+{% if error %}<div class="mb-4 p-3 rounded bg-red-50 border border-red-200 text-sm text-red-800">{{ error }}</div>{% endif %}
+<h1 class="text-xl font-semibold mb-4">Settings</h1>
+<div class="grid md:grid-cols-3 gap-6">
+  <form method="post" action="/ui/settings" class="md:col-span-2 bg-white border border-stone-200 rounded-lg p-4 space-y-3 text-sm">
+    <h2 class="font-semibold">Offer &amp; tone</h2>
+    <div class="grid grid-cols-2 gap-3">
+      <label>Tone<select name="tone" class="w-full border border-stone-300 rounded px-2 py-1">{% for t in ['friendly','formal'] %}<option {{ 'selected' if s.tone == t }}>{{ t }}</option>{% endfor %}</select></label>
+      <label>Language<select name="language" class="w-full border border-stone-300 rounded px-2 py-1">{% for t in ['English','Hinglish'] %}<option {{ 'selected' if s.language == t }}>{{ t }}</option>{% endfor %}</select></label>
+      <label>Niche focus<input name="niche_focus" value="{{ s.niche_focus }}" class="w-full border border-stone-300 rounded px-2 py-1"></label>
+      <label>Country focus (ISO code)<input name="country_focus" value="{{ s.country_focus }}" class="w-full border border-stone-300 rounded px-2 py-1"></label>
+      <label>Qualification threshold (0–100)<input type="number" name="quality_threshold" value="{{ s.quality_threshold }}" class="w-full border border-stone-300 rounded px-2 py-1"></label>
+      <label>Follow-up gaps (days)<input name="followup_gaps_days" value="{{ s.followup_gaps_days|join(',') }}" class="w-full border border-stone-300 rounded px-2 py-1"></label>
+      <label class="col-span-2">Booking link (optional)<input name="booking_link" value="{{ s.booking_link }}" placeholder="https://cal.com/..." class="w-full border border-stone-300 rounded px-2 py-1"></label>
+    </div>
+    <label class="flex items-start gap-2"><input type="checkbox" name="sample_offer_enabled" value="1" {{ 'checked' if s.sample_offer_enabled }} class="mt-1">
+      <span>Offer a free 20–40 s sample re-edit of one of their own public videos. Messages must say it's sent privately, never posted or reused, and deleted on request. Skip it for footage featuring patients or minors.</span></label>
+    <label class="block">Packages (JSON list — the ONLY prices replies may quote)
+      <textarea name="packages" rows="5" class="w-full border border-stone-300 rounded px-2 py-1 font-mono text-xs">{{ s.packages|tojson(indent=2) }}</textarea></label>
+    <p class="text-xs text-stone-500">Example: [{"name": "Starter", "description": "8 short-form reels/month, 48h turnaround, 1 revision", "price": "INR 12,000"}]</p>
+    <label class="block">Rates (JSON object)
+      <textarea name="rates" rows="3" class="w-full border border-stone-300 rounded px-2 py-1 font-mono text-xs">{{ s.rates|tojson(indent=2) }}</textarea></label>
+    <button class="px-4 py-2 rounded bg-stone-900 text-white">Save</button>
+  </form>
+
+  <div class="space-y-6">
+    <section class="bg-white border border-stone-200 rounded-lg p-4 text-sm space-y-2">
+      <h2 class="font-semibold">Gmail</h2>
+      {% if gmail %}<p>Connected as <b>{{ gmail.account_email }}</b></p>
+        <p class="text-xs text-stone-500">If your Google OAuth app is in "Testing", the token expires after 7 days — reconnect weekly.</p>
+      {% else %}<p class="text-stone-500">Not connected.</p>{% endif %}
+      <a href="/api/v1/integrations/google/connect" class="inline-block px-3 py-1.5 rounded border border-stone-300">{{ 'Reconnect' if gmail else 'Connect Gmail' }}</a>
+    </section>
+    <section class="bg-white border border-stone-200 rounded-lg p-4 text-sm">
+      <h2 class="font-semibold mb-2">Sending rules (from .env)</h2>
+      <dl class="grid grid-cols-2 gap-y-1 text-xs">
+        <dt class="text-stone-500">SEND_ENABLED</dt><dd class="{{ 'text-red-700 font-semibold' if cfg().send_enabled }}">{{ cfg().send_enabled }}</dd>
+        <dt class="text-stone-500">Daily / hourly email cap</dt><dd>{{ cfg().daily_cap_email }} / {{ cfg().hourly_cap_email }}</dd>
+        <dt class="text-stone-500">Min gap</dt><dd>{{ cfg().min_gap_seconds_email }} s</dd>
+        <dt class="text-stone-500">Daily handoff cap</dt><dd>{{ cfg().daily_cap_handoff }}</dd>
+        <dt class="text-stone-500">Send window</dt><dd>{{ cfg().send_window }} {{ cfg().timezone }}</dd>
+        <dt class="text-stone-500">Org lock</dt><dd>{{ cfg().contact_lock_days }} days</dd>
+        <dt class="text-stone-500">EU/UK allowed</dt><dd>{{ cfg().allow_eu_uk }}</dd>
+        <dt class="text-stone-500">Raw retention</dt><dd>{{ cfg().raw_retention_days }} days</dd>
+        <dt class="text-stone-500">LLM spend this month</dt><dd>INR {{ spend|round(1) }} / {{ cfg().monthly_llm_budget_inr|int }}</dd>
+      </dl>
+    </section>
+    <section class="bg-white border border-stone-200 rounded-lg p-4 text-sm">
+      <h2 class="font-semibold mb-2">Add do-not-contact</h2>
+      <form method="post" action="/ui/suppressions" class="flex gap-2">
+        <select name="type" class="border border-stone-300 rounded px-1">{% for t in ['email','domain','phone','instagram','linkedin','facebook','x','youtube'] %}<option>{{ t }}</option>{% endfor %}</select>
+        <input name="value" required class="flex-1 border border-stone-300 rounded px-2 py-1">
+        <button class="px-3 rounded bg-stone-900 text-white">Add</button>
+      </form>
+      <p class="text-xs text-stone-500 mt-2">Stored only as a SHA-256 hash; kept even after erasure.</p>
+    </section>
+  </div>
+</div>
+{% endblock %}

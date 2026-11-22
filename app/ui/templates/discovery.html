@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+{% block title %}Discovery{% endblock %}
+{% block content %}
+{% if error %}<div class="mb-4 p-3 rounded bg-red-50 border border-red-200 text-sm text-red-800">{{ error }}</div>{% endif %}
+<h1 class="text-xl font-semibold mb-4">Discovery</h1>
+<div class="grid md:grid-cols-2 gap-6">
+  <section class="bg-white border border-stone-200 rounded-lg p-4">
+    <h2 class="font-semibold mb-1">CSV import</h2>
+    <p class="text-xs text-stone-500 mb-3">For leads you found by hand (Meta Ad Library, job posts, directories). Columns: <code>name</code> (required), website, city, country, niche, email, phone, instagram, linkedin, facebook, x, youtube, contact_name, contact_role, intent_signal, source, source_url, notes.</p>
+    <form method="post" action="/ui/import" enctype="multipart/form-data" class="space-y-2 text-sm">
+      <input type="file" name="file" accept=".csv,text/csv" required>
+      <select name="niche" class="border border-stone-300 rounded px-2 py-1"><option value="">Niche from CSV column</option>
+        {% for n in niches %}<option value="{{ n.slug }}">{{ n.name }}</option>{% endfor %}</select>
+      <button class="px-3 py-1.5 rounded bg-stone-900 text-white">Import</button>
+    </form>
+    {% if report %}
+    <div class="mt-4 text-sm space-y-1">
+      <p><b>{{ report.created }}</b> created · {{ report.duplicates|length }} duplicates · {{ report.skipped|length }} skipped · {{ report.flagged|length }} flagged for review</p>
+      {% for d in report.duplicates %}<p class="text-xs text-stone-500">Row {{ d.row }} {{ d.name }}: duplicate (matched on {{ d.matched_on }})</p>{% endfor %}
+      {% for s in report.skipped %}<p class="text-xs text-stone-500">Row {{ s.row }} {{ s.name or '' }}: {{ s.reason }}</p>{% endfor %}
+      {% for f in report.flagged %}<p class="text-xs text-amber-800">Row {{ f.row }}: {{ f.warnings|join('; ') }}</p>{% endfor %}
+    </div>
+    {% endif %}
+  </section>
+
+  <section class="bg-white border border-stone-200 rounded-lg p-4">
+    <h2 class="font-semibold mb-1">Google Places search</h2>
+    {% if not places_enabled %}
+    <p class="text-sm text-amber-900 bg-amber-50 border border-amber-200 rounded p-2 mb-3">Off. Read the Google Maps Platform Service Specific Terms (Places caching table) and confirm building a prospect list is allowed, then set <code>PLACES_DISCOVERY_ENABLED=true</code>. Only place IDs are stored; names and contacts come from each business's own website.</p>
+    {% endif %}
+    <form method="post" action="/ui/discovery" class="space-y-2 text-sm">
+      <select name="niche" class="border border-stone-300 rounded px-2 py-1">{% for n in niches %}<option value="{{ n.slug }}">{{ n.name }}</option>{% endfor %}</select>
+      <input name="city" required placeholder="City" class="border border-stone-300 rounded px-2 py-1">
+      <input name="radius_m" type="number" value="5000" class="w-24 border border-stone-300 rounded px-2 py-1"> m
+      <input name="limit" type="number" value="20" max="60" class="w-20 border border-stone-300 rounded px-2 py-1"> max
+      <button {% if not places_enabled %}disabled{% endif %} class="px-3 py-1.5 rounded bg-stone-900 text-white disabled:opacity-40">Search</button>
+    </form>
+    <table class="w-full mt-4 text-xs">
+      <tr class="text-left text-stone-500"><th>#</th><th>City</th><th>Status</th><th>Found</th><th>Created</th><th>Skipped</th></tr>
+      {% for j in jobs %}<tr class="border-t border-stone-100"><td>{{ j.id }}</td><td>{{ j.city }}</td><td>{{ j.status }}{% if j.error %} <span class="text-red-700">{{ j.error }}</span>{% endif %}</td><td>{{ j.found }}</td><td>{{ j.created }}</td><td>{{ j.skipped }}</td></tr>{% endfor %}
+    </table>
+  </section>
+</div>
+{% endblock %}

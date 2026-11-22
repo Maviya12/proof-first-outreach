@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Outreach{% endblock %} · Proof-First</title>
+  <link rel="stylesheet" href="/static/app.css">
+  <script src="/static/htmx.min.js"></script>
+</head>
+<body class="bg-stone-50 text-stone-900 min-h-screen">
+  {% if request.session.get('user') %}
+  <nav class="bg-white border-b border-stone-200">
+    <div class="max-w-6xl mx-auto px-4 flex items-center gap-5 h-12 text-sm">
+      <a href="/" class="font-semibold">Proof-First</a>
+      <a href="/approvals" class="hover:underline">Approvals</a>
+      <a href="/leads" class="hover:underline">Leads</a>
+      <a href="/discovery" class="hover:underline">Discovery</a>
+      <a href="/handoff" class="hover:underline">Handoff</a>
+      <a href="/inbox" class="hover:underline">Inbox</a>
+      <a href="/portfolio" class="hover:underline">Portfolio</a>
+      <a href="/funnel" class="hover:underline">Funnel</a>
+      <a href="/settings" class="hover:underline">Settings</a>
+      <span class="ml-auto text-xs px-2 py-0.5 rounded {{ 'bg-red-100 text-red-800' if cfg().send_enabled else 'bg-amber-100 text-amber-800' }}">
+        {{ 'SENDING LIVE' if cfg().send_enabled else 'DRY RUN' }}
+      </span>
+      <form method="post" action="/logout"><button class="text-stone-500 hover:underline">Log out</button></form>
+    </div>
+  </nav>
+  {% endif %}
+  <main class="max-w-6xl mx-auto px-4 py-6">
+    {% if flash %}<div class="mb-4 p-3 rounded bg-emerald-50 border border-emerald-200 text-sm">{{ flash }}</div>{% endif %}
+    {% block content %}{% endblock %}
+  </main>
+</body>
+</html>

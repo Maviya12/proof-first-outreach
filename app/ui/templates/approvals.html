@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block title %}Approvals{% endblock %}
+{% block content %}
+<h1 class="text-xl font-semibold mb-1">Approval queue</h1>
+<p class="text-sm text-stone-500 mb-5">{{ cards|length }} waiting. Nothing is sent or released to handoff without your approval.</p>
+{% if not cards %}
+  <div class="bg-white border border-stone-200 rounded-lg p-8 text-center text-stone-500">Nothing to approve. Generate a message from a qualified lead.</div>
+{% endif %}
+<div class="space-y-6">
+  {% for c in cards %}{% with m=c.m, drafts=c.drafts, warnings=c.warnings, all_evidence=c.all_evidence %}
+    {% include "_approval_card.html" %}
+  {% endwith %}{% endfor %}
+</div>
+{% endblock %}

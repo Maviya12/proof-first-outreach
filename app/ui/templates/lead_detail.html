@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% block title %}{{ org.name }}{% endblock %}
+{% block content %}
+{% if error %}<div class="mb-4 p-3 rounded bg-red-50 border border-red-200 text-sm text-red-800">{{ error }}</div>{% endif %}
+<div class="flex flex-wrap items-baseline gap-3 mb-1">
+  <h1 class="text-xl font-semibold">{{ org.name }}</h1>
+  <span class="text-xs px-2 py-0.5 rounded bg-stone-100">{{ lead.status }}</span>
+  {% if lead.quality_score is not none %}<span class="text-sm text-stone-500">score {{ lead.quality_score|round|int }}</span>{% endif %}
+  {% if lead.intake_status %}<span class="text-xs px-2 py-0.5 rounded {{ 'bg-emerald-100' if lead.intake_status == 'SUFFICIENT' else 'bg-amber-100' }}">intake {{ lead.intake_status|lower }}</span>{% endif %}
+</div>
+<p class="text-sm text-stone-500 mb-1">{{ niche.name if niche else 'No niche' }} · {{ org.city or '' }} {{ org.country or '' }} ·
+  {% if lead.website %}<a class="underline" href="{{ lead.website }}" target="_blank" rel="noopener">{{ lead.website }}</a>{% endif %}
+  {% if lead.contact_name %} · {{ lead.contact_name }}{% if lead.contact_role %} ({{ lead.contact_role }}){% endif %}{% endif %}</p>
+{% if lead.needs_review %}<p class="text-sm text-amber-800 mb-1">⚠ {{ lead.needs_review }}</p>{% endif %}
+{% if org.contact_locked_until %}<p class="text-sm text-stone-500 mb-1">Org lock until {{ org.contact_locked_until|dt }}{% if org.lock_override %} (overridden){% endif %}</p>{% endif %}
+{% if lead.fit_reason %}<p class="text-sm mb-4">{{ lead.fit_reason }}</p>{% endif %}
+
+<div class="flex flex-wrap gap-2 mb-6 text-sm">
+  <form method="post" action="/ui/leads/{{ lead.id }}/enrich"><button class="px-3 py-1.5 rounded border border-stone-300 bg-white">Enrich website</button></form>
+  <form method="post" action="/ui/leads/{{ lead.id }}/qualify"><button class="px-3 py-1.5 rounded border border-stone-300 bg-white">Qualify</button></form>
+  <form method="post" action="/ui/leads/{{ lead.id }}/generate" class="flex gap-1">
+    <select name="channel" class="border border-stone-300 rounded px-2">
+      {% for ch in ['email','instagram','linkedin','facebook','x','whatsapp'] %}<option>{{ ch }}</option>{% endfor %}</select>
+    <button class="px-3 py-1.5 rounded bg-stone-900 text-white">Generate drafts</button></form>
+  <form method="post" action="/ui/leads/{{ lead.id }}/status" class="flex gap-1">
+    <select name="status" class="border border-stone-300 rounded px-2">
+      {% for s in ['INTERESTED','MEETING_BOOKED','CLIENT','NOT_A_FIT','NOT_INTERESTED','DO_NOT_CONTACT','BLOCKED'] %}<option>{{ s }}</option>{% endfor %}</select>
+    <button class="px-3 py-1.5 rounded border border-stone-300 bg-white">Set status</button></form>
+</div>
+
+<div class="grid md:grid-cols-2 gap-6">
+  <section class="bg-white border border-stone-200 rounded-lg p-4">
+    <h2 class="font-semibold mb-2">Evidence ({{ evidence|length }})</h2>
+    <ul class="space-y-2 text-sm max-h-[28rem] overflow-y-auto">
+      {% for e in evidence %}
+      <li class="border-b border-stone-100 pb-2"><span class="font-mono text-xs text-stone-500">E{{ e.id }} · {{ e.kind }} · {{ e.source_type }}{% if e.confidence < 1 %} · {{ (e.confidence*100)|round|int }}%{% endif %}</span>
+        <div>{{ e.snippet }}</div>
+        {% if e.source_url %}<a class="text-xs text-stone-500 underline break-all" href="{{ e.source_url }}" target="_blank" rel="noopener">{{ e.source_ref or e.source_url }}</a>{% endif %}</li>
+      {% else %}<li class="text-stone-500">No evidence yet. Enrich the website or add a profile intake.</li>{% endfor %}
+    </ul>
+    <h3 class="font-semibold mt-4 mb-1 text-sm">Contact points</h3>
+    <ul class="text-sm">{% for c in contacts %}<li><span class="text-stone-500">{{ c.type }}:</span> {{ c.value_norm }}{% if c.source_url %} <a class="text-xs underline text-stone-500" href="{{ c.source_url }}" target="_blank" rel="noopener">source</a>{% endif %}</li>{% endfor %}</ul>
+  </section>
+
+  <section class="bg-white border border-stone-200 rounded-lg p-4">
+    <h2 class="font-semibold mb-1">Public Profile Intake</h2>
+    <p class="text-xs text-stone-500 mb-3">Paste what you can see on their public profile. No scraping happens. Don't upload screenshots showing patients, minors, before/after images or health information — crop them or describe the post in text. Screenshots are sent to the Anthropic API for analysis and deleted after {{ cfg().raw_retention_days }} days.</p>
+    <form method="post" action="/ui/leads/{{ lead.id }}/intake" enctype="multipart/form-data" class="space-y-2 text-sm">
+      <div class="flex gap-2">
+        <select name="platform" class="border border-stone-300 rounded px-2">{% for p in ['instagram','linkedin','facebook','x','youtube'] %}<option>{{ p }}</option>{% endfor %}</select>
+        <input name="profile_url" required placeholder="Public profile URL" class="flex-1 border border-stone-300 rounded px-2 py-1">
+      </div>
+      <textarea name="bio" rows="2" placeholder="Bio / headline / about" class="w-full border border-stone-300 rounded px-2 py-1"></textarea>
+      <textarea name="captions" rows="5" placeholder="Last 5–15 captions, separated by a blank line or ---" class="w-full border border-stone-300 rounded px-2 py-1"></textarea>
+      <input name="dates_note" placeholder="Visible posting dates (optional, enables cadence)" class="w-full border border-stone-300 rounded px-2 py-1">
+      <input name="user_note" placeholder='One-line note, e.g. "reel at 0:12 has no captions"' class="w-full border border-stone-300 rounded px-2 py-1">
+      <input name="video_urls" placeholder="Public reel/video URLs (space separated, stored as links only)" class="w-full border border-stone-300 rounded px-2 py-1">
+      <input type="file" name="screenshots" multiple accept="image/png,image/jpeg" class="text-xs">
+      <button class="px-3 py-1.5 rounded bg-stone-900 text-white">Analyse (up to 8 screenshots)</button>
+    </form>
+  </section>
+
+  <section class="bg-white border border-stone-200 rounded-lg p-4">
+    <h2 class="font-semibold mb-2">History</h2>
+    <ul class="space-y-2 text-sm">
+      {% for m in messages %}<li><span class="text-xs px-1.5 rounded bg-stone-100">{{ m.status }}</span> {{ m.kind }} via {{ m.channel }} {{ m.sent_at|dt }}
+        {% if m.status in ['APPROVAL_PENDING','DRAFT'] %}<a class="underline text-xs" href="/approvals#m{{ m.id }}">review</a>{% endif %}
+        {% if m.error %}<div class="text-xs text-red-700">{{ m.error }}</div>{% endif %}</li>{% endfor %}
+      {% for i in interactions %}<li class="text-stone-700"><b>{{ 'You' if i.direction == 'out' else 'Them' }}</b> ({{ i.channel }}, {{ i.occurred_at|dt }}){% if i.classification %} <span class="text-xs px-1.5 rounded bg-stone-100">{{ i.classification }}</span>{% endif %}
+        <div class="text-xs whitespace-pre-wrap text-stone-600">{{ (i.body or '')[:400] }}</div></li>{% endfor %}
+      {% if not messages and not interactions %}<li class="text-stone-500">No activity yet.</li>{% endif %}
+    </ul>
+  </section>
+
+  <section class="bg-white border border-stone-200 rounded-lg p-4 space-y-4">
+    <div>
+      <h2 class="font-semibold mb-2">Log a reply received outside email</h2>
+      <form method="post" action="/ui/leads/{{ lead.id }}/reply" class="space-y-2 text-sm">
+        <select name="channel" class="border border-stone-300 rounded px-2">{% for ch in ['instagram','linkedin','facebook','x','whatsapp','email'] %}<option>{{ ch }}</option>{% endfor %}</select>
+        <textarea name="body" rows="3" required placeholder="Paste their reply" class="w-full border border-stone-300 rounded px-2 py-1"></textarea>
+        <button class="px-3 py-1.5 rounded border border-stone-300">Log reply</button>
+      </form>
+    </div>
+    <div class="flex gap-2 text-sm">
+      <form method="post" action="/ui/leads/{{ lead.id }}/override-lock" onsubmit="return confirm('Allow contacting another person at this organisation within the lock period?')"><button class="px-3 py-1.5 rounded border border-stone-300">Override org lock</button></form>
+      <form method="post" action="/ui/leads/{{ lead.id }}/erase" onsubmit="return confirm('Erase this lead permanently? Its suppression hashes are kept so they are never contacted again.')"><button class="px-3 py-1.5 rounded border border-red-300 text-red-700">Erase (privacy request)</button></form>
+    </div>
+  </section>
+</div>
+{% endblock %}
